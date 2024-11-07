@@ -2,9 +2,9 @@ class Solution {
     public boolean isValid(String s) {
         char[] a = s.toCharArray();
         Stack<Character> stack = new Stack<>();
-        if (a.length == 1 ){
-            return false;
-        }
+        // if (a.length == 1 ){
+        //     return false;
+        // }
         for (char i : a){
             if (i == ')' && !stack.isEmpty()) {
                 if (stack.peek() =='('){
