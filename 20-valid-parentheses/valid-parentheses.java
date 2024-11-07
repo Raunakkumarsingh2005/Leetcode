@@ -2,7 +2,7 @@ class Solution {
     public boolean isValid(String s) {
         char[] a = s.toCharArray();
         Stack<Character> stack = new Stack<>();
-        if (a.length == 1 ){//|| a[0] == ')' || a[0] == '}' || a[0] == ']'){
+        if (a.length == 1 ){
             return false;
         }
         for (char i : a){
