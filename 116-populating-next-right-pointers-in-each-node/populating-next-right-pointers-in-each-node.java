@@ -30,37 +30,24 @@ class Solution {
         }
 
         while (node.left != null) {
-            Node current = node;
+            Node node2 = node;
+            Node node1 = node2.left;
 
-            while (current != null) {
-                current.left.next = current.right;
-                if (current.next != null) {
-                    current.right.next = current.next.left;
+            while (node2 != null) {
+
+                node1.next = node2.right;
+                node1 = node1.next;
+                if (node2.next == null) {
+                    node1.next = null;
+                    node2 = node2.next;
+                } else {
+                    node2 = node2.next;
+                    node1.next = node2.left;
+                    node1 = node1.next;
                 }
-                current = current.next;
             }
             node = node.left;
         }
         return root;
-
-        // if (root == null){
-        //     return null;
-        // }
-
-        // Node leftMost = root;
-
-        // while (leftMost.left != null) {
-        // Node current = leftMost;
-        //     while(current != null) {
-        //         current.left.next = current.right;
-        //         if(current.next != null) {
-        //             current.right.next = current.next.left;
-        //         }
-        //         current = current.next;
-        //     }
-        //     leftMost = leftMost.left;
-        // }
-        // return root;
-        
     }
 }
