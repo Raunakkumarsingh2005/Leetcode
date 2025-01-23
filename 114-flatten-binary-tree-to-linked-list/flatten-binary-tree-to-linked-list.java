@@ -14,33 +14,22 @@
  * }
  */
 class Solution {
-    LinkedList<TreeNode> list = new LinkedList<>();
     public void flatten(TreeNode root) {
-        preOrder(root);
-        create(list);
-    }
+        TreeNode node = root;
+        while (node != null) {
+            if (node.left != null) {
+                TreeNode temp = node.left;
+                while (temp.right != null) {
+                    temp = temp.right;
+                }
 
-    public void preOrder(TreeNode node) {
-        if (node == null) {
-            return;
-        }
-
-        list.add(node);
-        preOrder(node.left);
-        preOrder(node.right);
-    }
-    public void create(LinkedList<TreeNode> list) {
-        if (list.isEmpty()) {
-            return;
-        }
-        
-        TreeNode node = list.remove();
-        node.left = null;
-        while (!list.isEmpty()) {
-            TreeNode node1 = list.remove();
-            node1.left = null;
-            node.right = node1;
+                temp.right = node.right;
+                node.right = node.left;
+                node.left = null;
+            }
             node = node.right;
         }
     }
+
+    
 }
