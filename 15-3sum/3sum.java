@@ -1,36 +1,42 @@
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-    List<List<Integer>> result = new ArrayList<>();
-    Arrays.sort(nums);  // Sort the array
+        HashSet<List<Integer>> set = new HashSet<>();
+        Arrays.sort(nums);
 
-    for (int i = 0; i < nums.length - 2; i++) {
-        // Skip duplicate elements
-        if (i > 0 && nums[i] == nums[i - 1]) continue;
+        for (int i = 0; i < nums.length-1; i++) {
+            int target = -nums[i];
+            int left = 0;
+            int right = nums.length-1;
+            if (i > 0 && nums[i] == nums[i-1]) {
+                continue;
+            }
 
-        int left = i + 1;
-        int right = nums.length - 1;
+            while (left < right) {
+                if (left == i) {
+                    left++;
+                } else if (right == i) {
+                    right--;
+                }
 
-        while (left < right) {
-            int sum = nums[i] + nums[left] + nums[right];
+                else if (left < right) {
+                    int sum = nums[left] + nums[right];
+                    if (sum > target) {
+                        right--;
+                    } else if (sum < target) {
+                        left++;
+                    } else {
+                        List<Integer> arr = new ArrayList<>(Arrays.asList(nums[i], nums[left], nums[right]));
+                        Collections.sort(arr);
+                        set.add(arr);
+                        left++;
+                        right--;
+                    }
+                }
 
-            if (sum == 0) {
-                result.add(Arrays.asList(nums[i], nums[left], nums[right]));
-
-                // Skip duplicates
-                while (left < right && nums[left] == nums[left + 1]) left++;
-                while (left < right && nums[right] == nums[right - 1]) right--;
-
-                left++;
-                right--;
-            } else if (sum < 0) {
-                left++;
-            } else {
-                right--;
             }
         }
+
+        List<List<Integer>> list = new ArrayList(set);
+        return list;
     }
-
-    return result;
-}
-
 }
