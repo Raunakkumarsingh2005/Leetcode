@@ -5,7 +5,7 @@ class Solution {
         int bestending2 = nums[0];
 
         if (nums.length <= 1) {
-            result = Math.max(result, Math.max(Math.abs(bestEnding), Math.abs(bestending2)));
+            return Math.max(result, Math.max(Math.abs(bestEnding), Math.abs(bestending2)));
         }
 
         for (int i = 1 ; i < nums.length; i++) {
