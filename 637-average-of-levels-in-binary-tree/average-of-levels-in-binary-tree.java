@@ -1,46 +1,25 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public List<Double> averageOfLevels(TreeNode root) {
-        List<Double> result = new ArrayList<>();
+        List<Double> res = new ArrayList<>();
+        Queue<TreeNode> q = new LinkedList<>();
 
-        if (root == null) {
-            return result;
-        }
+        q.offer(root);
 
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            double sum = 0;
 
-        while (!queue.isEmpty()) {
-            int levelSize = queue.size();
-            Double average = 0.0;
-            for (int i = 0; i < levelSize; i++) {
-                TreeNode node = queue.poll();
-                average += node.val;
-                if (node.left != null) {
-                    queue.offer(node.left);
-                }
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+                sum += node.val;
 
-                if (node.right != null) {
-                    queue.offer(node.right);
-                }
+                if (node.left != null) q.offer(node.left);
+                if (node.right != null) q.offer(node.right);
             }
-            average = average / levelSize;
-            result.add(average);
+
+            res.add(sum / size);
         }
-        return result;
+
+        return res;
     }
 }
