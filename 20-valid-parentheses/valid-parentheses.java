@@ -1,30 +1,21 @@
+// Valid Parentheses
 class Solution {
     public boolean isValid(String s) {
-        char[] a = s.toCharArray();
         Stack<Character> stack = new Stack<>();
-        for (char i : a){
-            if (i == ')' && !stack.isEmpty()) {
-                if (stack.pop() =='('){
-                    continue;
-                }
-                return false;
-            }
 
-            if (i == '}' && !stack.isEmpty()) {
-                if (stack.pop() =='{'){
-                    continue;
-                }
-                return false;
-            }
-            
-            if (i == ']' && !stack.isEmpty()) {
-                if (stack.pop() =='['){
-                    continue;
-                }
-                return false;
-            }
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) return false;
 
-            else stack.push(i);
+                char top = stack.pop();
+                if ((c == ')' && top != '(') ||
+                    (c == '}' && top != '{') ||
+                    (c == ']' && top != '[')) {
+                    return false;
+                }
+            }
         }
 
         return stack.isEmpty();
