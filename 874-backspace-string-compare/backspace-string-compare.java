@@ -1,27 +1,20 @@
+// Backspace String Compare
 class Solution {
     public boolean backspaceCompare(String s, String t) {
-        String str1, str2;
-        Stack<Character> stk = new Stack<>();
-        for (Character i : s.toCharArray()) {
-            if (i.equals('#') && !stk.empty()) {
-                stk.pop();
-            } else if (!i.equals('#')){
-                stk.push(i);
+        return build(s).equals(build(t));
+    }
+
+    private String build(String str) {
+        StringBuilder sb = new StringBuilder();
+
+        for (char c : str.toCharArray()) {
+            if (c != '#') {
+                sb.append(c);
+            } else if (sb.length() > 0) {
+                sb.deleteCharAt(sb.length() - 1);
             }
         }
-        str1 = stk.toString();
-        stk.clear();
 
-        for (Character i : t.toCharArray()) {
-            if (i.equals('#') && !stk.empty()) {
-                stk.pop();
-            } else if (!i.equals('#')){
-                stk.push(i);
-            }
-        }
-        str2 = stk.toString();
-
-        return str1.equals(str2) ? true : false ;
-
+        return sb.toString();
     }
 }
