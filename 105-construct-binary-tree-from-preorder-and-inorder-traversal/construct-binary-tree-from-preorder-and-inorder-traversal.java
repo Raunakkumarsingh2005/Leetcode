@@ -1,39 +1,29 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        return helper(preorder, inorder);
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            map.put(inorder[i], i);
+        }
+
+        return build(preorder, 0, preorder.length - 1,
+                     inorder, 0, inorder.length - 1, map);
     }
 
-    public TreeNode helper(int[] preorder, int[] inorder) {
-        if (preorder.length == 0 && inorder.length == 0) {
-            return null;
-        }
+    private TreeNode build(int[] pre, int ps, int pe,
+                           int[] in, int is, int ie,
+                           Map<Integer, Integer> map) {
+        if (ps > pe || is > ie) return null;
 
-        TreeNode node = new TreeNode(preorder[0]);
-        int index = 0;
-        for (int i = 0; i < inorder.length; i++) {
-            if (inorder[i] == node.val) {
-                index = i;
-            }
-        }
+        TreeNode root = new TreeNode(pre[ps]);
+        int idx = map.get(root.val);
+        int leftSize = idx - is;
 
-        node.left = helper(Arrays.copyOfRange(preorder, 1, index+1), Arrays.copyOfRange(inorder, 0, index));
-        node.right = helper(Arrays.copyOfRange(preorder, index+1, preorder.length), Arrays.copyOfRange(inorder, index+1, inorder.length));
+        root.left = build(pre, ps + 1, ps + leftSize,
+                          in, is, idx - 1, map);
 
-        return node;
+        root.right = build(pre, ps + leftSize + 1, pe,
+                           in, idx + 1, ie, map);
+
+        return root;
     }
 }
