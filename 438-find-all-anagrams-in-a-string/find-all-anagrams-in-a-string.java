@@ -1,33 +1,38 @@
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
-        List<Integer> result = new ArrayList<>();
-        if (s.length() < p.length()) return result;
+        int low = 0;
+        int high = 0;
+        int n = s.length();
+        List<Integer> res = new ArrayList<>();
+        Map<Character, Integer> pMap = new HashMap<>();
+        Map<Character, Integer> map = new HashMap<>();
 
-        int[] pCount = new int[26];
-        int[] window = new int[26];
-
-        for (char c : p.toCharArray()) {
-            pCount[c - 'a']++;
+        for (char ch : p.toCharArray()) {
+            pMap.put(ch, pMap.getOrDefault(ch, 0)+1);
         }
 
-        int left = 0, right = 0;
-        int n = s.length(), k = p.length();
+        while (high < n) {
+            map.put(s.charAt(high), map.getOrDefault(s.charAt(high), 0)+1);
 
-        while (right < n) {
-            window[s.charAt(right) - 'a']++;
+            while (high - low + 1 > p.length()) {
+                char leftChar = s.charAt(low);
 
-            if (right - left + 1 > k) {
-                window[s.charAt(left) - 'a']--;
-                left++;
+                map.put(leftChar, map.get(leftChar) - 1);
+
+                if (map.get(leftChar) == 0) {
+                    map.remove(leftChar);
+                }
+
+                low++;
             }
 
-            if (Arrays.equals(window, pCount)) {
-                result.add(left);
+             if (map.equals(pMap)) {
+                res.add(low);
             }
 
-            right++;
+            high++;
         }
 
-        return result;
+        return res;
     }
 }
