@@ -1,34 +1,32 @@
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
-        int left = 1, right = 0;
+        Arrays.sort(piles);
+        int low = 1;
+        int high = piles[piles.length-1];
 
-        for (int p : piles) {
-            right = Math.max(right, p);
-        }
+        while (low <= high) {
+            int mid = low + (high-low)/2;
 
-        int ans = right;
-
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-
-            if (canFinish(piles, h, mid)) {
-                ans = mid;
-                right = mid - 1;
+            if (isValidEatingSpeed(piles, h, mid)) {
+                high = mid-1;
             } else {
-                left = mid + 1;
+                low = mid+1;
             }
         }
 
-        return ans;
+        return low;
     }
 
-    private boolean canFinish(int[] piles, int h, int speed) {
-        long hours = 0; // FIX: use long to avoid overflow
-
-        for (int p : piles) {
-            hours += (p + speed - 1) / speed;
+    public boolean isValidEatingSpeed(int[] piles, int h, int mid) {
+        long sum = 0;
+        for (int i : piles) {
+            sum += Math.ceilDiv(i, mid);
         }
 
-        return hours <= h;
+        if (sum <= h) {
+            return true;
+        }
+
+        return false;
     }
 }
